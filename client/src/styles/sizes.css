@@ -1,0 +1,4 @@
+.screen1200 {
+  width: min(96%, 1200px);
+  margin-inline: auto;
+}
