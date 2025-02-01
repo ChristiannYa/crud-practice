@@ -36,3 +36,16 @@ export const buildUpdateQuery = (table, fields) => `
   WHERE id = $1
   RETURNING *
 `;
+
+
+/**
+ * Builds a DELETE query for a given table
+ * @param {string} table - The table name
+ * @param {string} field - The field to use in WHERE clause
+ * @returns {string} - The generated SQL query
+ */
+export const buildDeleteQuery = (table, field) => `
+  DELETE FROM ${table}
+  WHERE ${field} = $1
+  RETURNING category_name
+`;

@@ -2,10 +2,12 @@ import { Router } from 'express';
 import { pool } from '../config/db.mjs';
 import { lettersOnly } from '../middleware/index.mjs';
 import { handleRepeatedField } from '../utils/repeatedField.mjs';
+import { buildCheckPetsQuery } from '../utils/pets-categories/queries.mjs';
 import {
   buildSelectQuery,
   buildInsertQuery,
   buildUpdateQuery,
+  buildDeleteQuery,
 } from '../utils/queries.mjs';
 
 const router = Router();
@@ -79,8 +81,7 @@ router.delete('/api/categories/:category_name', async (req, res) => {
 
   try {
     // First check if category has pets
-    const checkPetsQuery =
-      'SELECT COUNT(*) FROM pets WHERE category_id = (SELECT id FROM categories WHERE category_name = $1)';
+    const checkPetsQuery = buildCheckPetsQuery('category_name');
     const petsResult = await pool.query(checkPetsQuery, [category_name]);
 
     if (petsResult.rows[0].count > 0) {
@@ -90,8 +91,7 @@ router.delete('/api/categories/:category_name', async (req, res) => {
     }
 
     // If no pets found, proceed with deletion
-    const deleteCategoryQuery =
-      'DELETE FROM categories WHERE category_name = $1 RETURNING category_name';
+    const deleteCategoryQuery = buildDeleteQuery('categories', 'category_name');
     const result = await pool.query(deleteCategoryQuery, [category_name]);
 
     if (result.rowCount === 0) {
