@@ -2,3 +2,7 @@
   width: min(96%, 1200px);
   margin-inline: auto;
 }
+
+.screen500 {
+  width: min(96%, 500px);
+}

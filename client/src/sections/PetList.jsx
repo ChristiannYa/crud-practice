@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import PetCard from '../components/PetCard';
+import AddPetForm from '../admin/components/AddPetForm';
 
 const PetList = () => {
   const [pets, setPets] = useState([]);
+  const [showAddPetForm, setShowAddPetForm] = useState(false);
 
   useEffect(() => {
     const fetchPets = async () => {
@@ -33,7 +35,14 @@ const PetList = () => {
   }, {});
 
   return (
-    <div className="screen1200">
+    <div className="screen1200 py-2">
+      <button
+        className="cursor-pointer text-lg text-amber-500 font-mono font-normal capitalize border-1 border-white rounded-sm w-fit h-fit px-2 py-1 flex justify-center items-center"
+        onClick={() => setShowAddPetForm(!showAddPetForm)}
+      >
+        <p>{showAddPetForm ? 'close form' : 'add pet'}</p>
+      </button>
+      {showAddPetForm && <AddPetForm />}
       {Object.entries(groupedPets).map(([category, petsInCategory]) => {
         return (
           <div key={category} className="py-4">

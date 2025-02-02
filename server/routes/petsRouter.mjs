@@ -2,14 +2,11 @@ import { Router } from 'express';
 import { pool } from '../config/db.mjs';
 import { validatePetAge } from '../middleware/index.mjs';
 import { handleRepeatedField } from '../utils/repeatedField.mjs';
-import {
-  buildSelectQuery,
-  buildUpdateQuery,
-  buildDeleteQuery,
-} from '../utils/queries.mjs';
+import { buildUpdateQuery, buildDeleteQuery } from '../utils/queries.mjs';
 import {
   sortPetsByCategoryQuery,
   getPetsByCategoryNameQuery,
+  getCategoryIdByNameQuery,
   insertWithCategoryQuery,
 } from '../utils/pets/queries.mjs';
 
@@ -60,12 +57,6 @@ router.get('/api/pets/:category_name', async (req, res) => {
 router.post('/api/pets', validatePetAge, async (req, res) => {
   const { category_name, ...petData } = req.body;
 
-  /**
-    * Get the category id from the category_name
-
-    If user were to choose 'dogs' as a pet category:
-    SELECT id FROM categories WHERE LOWER(category_name) = LOWER('dogs')
-  */
   try {
     const categoryResult = await pool.query(getCategoryIdByNameQuery(['id']), [
       category_name,
@@ -101,7 +92,6 @@ router.patch('/api/pets/:id', async (req, res) => {
   const { id } = req.params;
   const updateFields = Object.keys(req.body);
   const values = [id, ...updateFields.map((field) => req.body[field])];
-
   const patchPetQuery = buildUpdateQuery('pets', updateFields);
 
   try {
