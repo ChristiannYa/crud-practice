@@ -2,7 +2,11 @@ import { Router } from 'express';
 import { pool } from '../config/db.mjs';
 import { validatePetAge } from '../middleware/index.mjs';
 import { handleRepeatedField } from '../utils/repeatedField.mjs';
-import { buildSelectQuery, buildUpdateQuery } from '../utils/queries.mjs';
+import {
+  buildSelectQuery,
+  buildUpdateQuery,
+  buildDeleteQuery,
+} from '../utils/queries.mjs';
 import {
   getPetsByCategoryNameQuery,
   insertWithCategoryQuery,
@@ -90,7 +94,7 @@ router.post('/api/pets', validatePetAge, async (req, res) => {
     res.status(201).json(dbResult.rows[0]);
   } catch (error) {
     console.error('Error adding pet:', error);
-    handleRepeatedField(error, res, 'Pet')
+    handleRepeatedField(error, res, 'Pet');
   }
 });
 
@@ -98,7 +102,7 @@ router.post('/api/pets', validatePetAge, async (req, res) => {
 router.patch('/api/pets/:id', async (req, res) => {
   if (req.body.pet_age) {
     validatePetAge(req, res, () => {});
-  };
+  }
 
   const { id } = req.params;
   const updateFields = Object.keys(req.body);
@@ -117,7 +121,31 @@ router.patch('/api/pets/:id', async (req, res) => {
 
     res.status(200).json(result.rows[0]);
   } catch (error) {
-    handleRepeatedField(error, res, 'Pet')
+    handleRepeatedField(error, res, 'Pet');
+  }
+});
+
+/* DELETE request - Delete a pet */
+router.delete('/api/pets/:id', async (req, res) => {
+  const { id } = req.params;
+  const deletePetQuery = buildDeleteQuery('pets', 'id', '*');
+
+  try {
+    const result = await pool.query(deletePetQuery, [id]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        error: `Pet with id ${id} not found`,
+      });
+    }
+
+    res.status(200).json({
+      message: `Successfully deleted pet:`,
+      deletedPet: result.rows[0],
+    });
+  } catch (error) {
+    console.error('Error deleting pet:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 

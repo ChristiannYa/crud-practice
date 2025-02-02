@@ -91,7 +91,11 @@ router.delete('/api/categories/:category_name', async (req, res) => {
     }
 
     // If no pets found, proceed with deletion
-    const deleteCategoryQuery = buildDeleteQuery('categories', 'category_name');
+    const deleteCategoryQuery = buildDeleteQuery(
+      'categories',
+      'category_name',
+      'category_name'
+    );
     const result = await pool.query(deleteCategoryQuery, [category_name]);
 
     if (result.rowCount === 0) {

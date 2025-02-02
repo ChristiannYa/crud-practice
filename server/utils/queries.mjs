@@ -28,7 +28,12 @@ export const buildSelectQuery = (table, fields = ['*'], conditionalField) => {
   `;
 };
 
-
+/**
+ * Builds an UPDATE query for a given table and fields
+ * @param {string} table - The table name
+ * @param {string[]} fields - The fields to update
+ * @returns {string} - The generated SQL query
+ */
 export const buildUpdateQuery = (table, fields) => `
   UPDATE ${table}
   SET ${fields.map((field, index) => `${field} = $${index + 2}`).join(', ')},
@@ -37,15 +42,14 @@ export const buildUpdateQuery = (table, fields) => `
   RETURNING *
 `;
 
-
 /**
  * Builds a DELETE query for a given table
  * @param {string} table - The table name
  * @param {string} field - The field to use in WHERE clause
  * @returns {string} - The generated SQL query
  */
-export const buildDeleteQuery = (table, field) => `
+export const buildDeleteQuery = (table, field, returningField = '*') => `
   DELETE FROM ${table}
   WHERE ${field} = $1
-  RETURNING category_name
+  RETURNING ${returningField}
 `;
