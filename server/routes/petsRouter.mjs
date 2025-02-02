@@ -8,6 +8,7 @@ import {
   buildDeleteQuery,
 } from '../utils/queries.mjs';
 import {
+  sortPetsByCategoryQuery,
   getPetsByCategoryNameQuery,
   insertWithCategoryQuery,
 } from '../utils/pets/queries.mjs';
@@ -24,14 +25,8 @@ const petFields = [
 
 /* GET request - Get ALL pets (sorted by category) */
 router.get('/api/pets', async (req, res) => {
-  const getPetsQuery = `
-    SELECT pets.*, categories.category_name 
-    FROM pets 
-    JOIN categories ON pets.category_id = categories.id
-  `;
-
   try {
-    const result = await pool.query(getPetsQuery);
+    const result = await pool.query(sortPetsByCategoryQuery(['pets.*']));
     res.status(200).json(result.rows);
   } catch (error) {
     console.error('Error fetching pets:', error);
@@ -39,12 +34,12 @@ router.get('/api/pets', async (req, res) => {
   }
 });
 
-/* GET request - Get pets by category_id */
+/* GET request - Get pets by category_name */
 router.get('/api/pets/:category_name', async (req, res) => {
   const { category_name } = req.params;
 
   try {
-    const petsResult = await pool.query(getPetsByCategoryNameQuery, [
+    const petsResult = await pool.query(getPetsByCategoryNameQuery(['p.*']), [
       category_name,
     ]);
 
@@ -71,13 +66,8 @@ router.post('/api/pets', validatePetAge, async (req, res) => {
     If user were to choose 'dogs' as a pet category:
     SELECT id FROM categories WHERE LOWER(category_name) = LOWER('dogs')
   */
-  const getCategoryIdQuery = `
-    SELECT id FROM categories
-    WHERE LOWER(category_name) = LOWER($1)
-  `;
-
   try {
-    const categoryResult = await pool.query(getCategoryIdQuery, [
+    const categoryResult = await pool.query(getCategoryIdByNameQuery(['id']), [
       category_name,
     ]);
 
