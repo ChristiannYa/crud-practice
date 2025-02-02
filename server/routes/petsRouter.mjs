@@ -22,9 +22,13 @@ const petFields = [
   'last_vet_visit',
 ];
 
-/* GET request - Get ALL pets */
+/* GET request - Get ALL pets (sorted by category) */
 router.get('/api/pets', async (req, res) => {
-  const getPetsQuery = buildSelectQuery('pets');
+  const getPetsQuery = `
+    SELECT pets.*, categories.category_name 
+    FROM pets 
+    JOIN categories ON pets.category_id = categories.id
+  `;
 
   try {
     const result = await pool.query(getPetsQuery);
