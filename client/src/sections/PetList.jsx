@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import PetCard from '../components/PetCard';
+import ConfirmPetDeletePopup from '../admin/components/pets/ConfirmPetDeletePopup';
 import AddPetForm from '../admin/components/pets/AddPetForm';
 import { deletePet } from '../admin/requests/pets';
 
 const PetList = () => {
   const [pets, setPets] = useState([]);
   const [showAddPetForm, setShowAddPetForm] = useState(false);
+  const [petToDelete, setPetToDelete] = useState(null);
 
   useEffect(() => {
     const fetchPets = async () => {
@@ -21,6 +23,17 @@ const PetList = () => {
 
     fetchPets();
   }, []);
+
+  const handleDeleteClick = (pet) => {
+    setPetToDelete(pet);
+  };
+
+  const handleConfirmPetDelete = async () => {
+    if (petToDelete) {
+      await handlePetDelete(petToDelete.id);
+      setPetToDelete(null);
+    }
+  };
 
   const handlePetDelete = async (id) => {
     try {
@@ -46,13 +59,18 @@ const PetList = () => {
 
   return (
     <div className="screen1200 w-full h-full py-2">
+      {/* add pet button */}
       <button
         className="text-lg text-white px-2 py-1 bg-neutral-700 rounded-md cursor-pointer"
         onClick={() => setShowAddPetForm(!showAddPetForm)}
       >
         <p>{showAddPetForm ? 'close form' : 'add pet'}</p>
       </button>
+
+      {/* pet form */}
       {showAddPetForm && <AddPetForm />}
+
+      {/* pets */}
       {Object.entries(groupedPets).map(([category, petsInCategory]) => {
         return (
           <div key={category} className="py-4">
@@ -63,20 +81,22 @@ const PetList = () => {
               {petsInCategory.map((pet) => (
                 <PetCard
                   key={pet.id}
-                  id={pet.id}
-                  img={pet.img_url}
-                  name={pet.pet_name}
-                  breed={pet.pet_breed}
-                  age={pet.pet_age}
-                  weight={pet.pet_weight}
-                  lastVetVisit={pet.last_vet_visit}
-                  onDelete={handlePetDelete}
+                  {...pet}
+                  onDeleteClick={() => handleDeleteClick(pet)}
                 />
               ))}
             </div>
           </div>
         );
       })}
+
+      {petToDelete && (
+        <ConfirmPetDeletePopup
+          pet={petToDelete}
+          onConfirm={handleConfirmPetDelete}
+          onCancel={() => setPetToDelete(null)}
+        />
+      )}
     </div>
   );
 };
