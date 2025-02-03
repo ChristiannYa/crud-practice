@@ -3,9 +3,13 @@ import { useEffect, useState } from 'react';
 import { addPet } from '../../requests/pets';
 import { getPetCategories } from '../../requests/pet-categories';
 import SuccessPopUp from './SuccessPopUp';
+import ErrorPopUp from './ErrorPopUp';
+import { validatePetData } from './utils/validate-pet-data';
 
 const AddPetForm = () => {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [error, setError] = useState(null);
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
   const [addedPet, setAddedPet] = useState(null);
   const [categories, setCategories] = useState([]);
 
@@ -28,10 +32,12 @@ const AddPetForm = () => {
   }, []);
 
   const handleSubmit = async (e) => {
-    console.log(petData);
     e.preventDefault();
+    setError(null);
 
     try {
+      validatePetData(petData);
+
       const newPet = await addPet(petData);
       setAddedPet(newPet);
       setShowSuccessPopup(true);
@@ -45,7 +51,8 @@ const AddPetForm = () => {
         last_vet_visit: '',
       });
     } catch (error) {
-      console.error('Error adding pet:', error);
+      setError(error.message);
+      setShowErrorPopup(true);
     }
   };
 
@@ -146,6 +153,10 @@ const AddPetForm = () => {
           pet={addedPet}
           onClose={() => setShowSuccessPopup(false)}
         />
+      )}
+
+      {showErrorPopup && error && (
+        <ErrorPopUp error={error} onClose={() => setShowErrorPopup(false)} />
       )}
     </>
   );

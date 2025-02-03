@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 
+import { handlePopupClose } from './utils/animations/handle-popup-close';
+
 const SuccessPopUp = ({ pet, onClose }) => {
   return (
     <div className="popup-overlay">
@@ -28,7 +30,7 @@ const SuccessPopUp = ({ pet, onClose }) => {
           </p>
         </div>
         <button
-          onClick={onClose}
+          onClick={() => handlePopupClose(onClose)}
           className="mt-4 px-2 py-1 bg-neutral-700 rounded-md cursor-pointer text-white"
         >
           Close

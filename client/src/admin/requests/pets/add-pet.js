@@ -5,26 +5,18 @@ const addPet = async (petData) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        category_name: petData.category_name,
-        pet_name: petData.pet_name,
-        pet_breed: petData.pet_breed,
-        pet_age: petData.pet_age,
-        pet_weight: petData.pet_weight,
-        last_vet_visit: petData.last_vet_visit,
-      }),
+      body: JSON.stringify(petData),
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error);
+      throw new Error(data.error || 'Failed to add pet');
     }
 
-    const newPet = await response.json();
-    return newPet;
+    return data;
   } catch (error) {
-    console.error('Error adding pet:', error);
-    throw error;
+    throw new Error(error.message || 'Error adding pet');
   }
 };
 
