@@ -16,12 +16,15 @@ const ConfirmPetDeletePopup = ({ pet, onConfirm, onCancel }) => {
         </h2>
         <div className="space-y-2">
           <p className="capitalize tp-1-light">
+            <span className="tp-1">Category:</span> {pet.category_name}
+          </p>
+          <p className="capitalize tp-1-light">
             <span className="tp-1">Name:</span> {pet.pet_name}
           </p>
           <p className="capitalize tp-1-light">
             <span className="tp-1">Breed:</span> {pet.pet_breed}
           </p>
-          <p className="capitalize tp-1-light">
+          <p className="tp-1-light">
             <span className="tp-1">Age:</span> {pet.pet_age} years
           </p>
           <p className="capitalize tp-1-light">
@@ -35,13 +38,13 @@ const ConfirmPetDeletePopup = ({ pet, onConfirm, onCancel }) => {
         <div className="mt-4 flex gap-2">
           <button
             onClick={handleConfirmPetDelete}
-            className="px-2 py-1 bg-red-600 rounded-md cursor-pointer text-white"
+            className="px-2 py-1 bg-red-600 hover:bg-red-700 rounded-md cursor-pointer text-white"
           >
             Delete
           </button>
           <button
             onClick={() => handlePopupClose(onCancel)}
-            className="px-2 py-1 bg-neutral-700 rounded-md cursor-pointer text-white"
+            className="px-2 py-1 bg-neutral-700 hover:bg-neutral-600 rounded-md cursor-pointer text-white"
           >
             Cancel
           </button>
@@ -53,6 +56,7 @@ const ConfirmPetDeletePopup = ({ pet, onConfirm, onCancel }) => {
 
 ConfirmPetDeletePopup.propTypes = {
   pet: PropTypes.shape({
+    category_name: PropTypes.string.isRequired,
     pet_name: PropTypes.string.isRequired,
     pet_breed: PropTypes.string.isRequired,
     pet_age: PropTypes.number.isRequired,
