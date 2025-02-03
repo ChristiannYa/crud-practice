@@ -3,6 +3,6 @@
   margin-inline: auto;
 }
 
-.screen500 {
-  width: min(96%, 500px);
+.screen400 {
+  width: min(96%, 400px);
 }

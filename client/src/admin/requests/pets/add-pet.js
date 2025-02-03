@@ -7,11 +7,11 @@ const addPet = async (petData) => {
       },
       body: JSON.stringify({
         category_name: petData.category_name,
-        pet_name: petData.name,
-        pet_breed: petData.breed,
-        pet_age: petData.age,
-        pet_weight: petData.weight,
-        last_vet_visit: petData.lastVetVisit,
+        pet_name: petData.pet_name,
+        pet_breed: petData.pet_breed,
+        pet_age: petData.pet_age,
+        pet_weight: petData.pet_weight,
+        last_vet_visit: petData.last_vet_visit,
       }),
     });
 

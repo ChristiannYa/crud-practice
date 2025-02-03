@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import PetCard from '../components/PetCard';
-import AddPetForm from '../admin/components/AddPetForm';
+import AddPetForm from '../admin/components/pets/AddPetForm';
 
 const PetList = () => {
   const [pets, setPets] = useState([]);
@@ -35,9 +35,9 @@ const PetList = () => {
   }, {});
 
   return (
-    <div className="screen1200 py-2">
+    <div className="screen1200 w-full h-full py-2">
       <button
-        className="cursor-pointer text-lg text-amber-500 font-mono font-normal capitalize border-1 border-white rounded-sm w-fit h-fit px-2 py-1 flex justify-center items-center"
+        className="text-lg text-white px-2 py-1 bg-neutral-700 rounded-md cursor-pointer"
         onClick={() => setShowAddPetForm(!showAddPetForm)}
       >
         <p>{showAddPetForm ? 'close form' : 'add pet'}</p>
