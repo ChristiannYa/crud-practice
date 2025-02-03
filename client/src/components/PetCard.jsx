@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
+import { formatDate } from '../utils/format-date';
 
 const PetCard = ({ img, name, breed, age, weight, lastVetVisit }) => {
   return (
-    <div className="w-[320px] bg-neutral-800 p-4 rounded-lg">
+    <div className="w-[350px] bg-neutral-800 p-4 rounded-lg">
       <div className="flex gap-x-4">
         <div className="w-[50px] h-[50px] mb-2 bg-slate-600">
           <img
@@ -30,7 +31,7 @@ const PetCard = ({ img, name, breed, age, weight, lastVetVisit }) => {
           </div>
           <div className="flex gap-x-1 badge">
             <h3 className="font-semibold tp-1">Last Vet Visit:</h3>
-            <p className="tp-1-light capitalize">{lastVetVisit}</p>
+            <p className="tp-1-light capitalize">{formatDate(lastVetVisit)}</p>
           </div>
         </div>
       </div>
