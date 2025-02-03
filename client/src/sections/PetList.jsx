@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import PetCard from '../components/PetCard';
 import AddPetForm from '../admin/components/pets/AddPetForm';
+import { deletePet } from '../admin/requests/pets';
 
 const PetList = () => {
   const [pets, setPets] = useState([]);
@@ -20,6 +21,15 @@ const PetList = () => {
 
     fetchPets();
   }, []);
+
+  const handlePetDelete = async (id) => {
+    try {
+      await deletePet(id);
+      setPets(pets.filter((pet) => pet.id !== id));
+    } catch (error) {
+      console.error('Error deleting pet:', error);
+    }
+  };
 
   // Group pets by category
   const groupedPets = pets.reduce((accumulator, pet) => {
@@ -53,12 +63,14 @@ const PetList = () => {
               {petsInCategory.map((pet) => (
                 <PetCard
                   key={pet.id}
+                  id={pet.id}
                   img={pet.img_url}
                   name={pet.pet_name}
                   breed={pet.pet_breed}
                   age={pet.pet_age}
                   weight={pet.pet_weight}
                   lastVetVisit={pet.last_vet_visit}
+                  onDelete={handlePetDelete}
                 />
               ))}
             </div>

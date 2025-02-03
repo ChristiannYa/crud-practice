@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 
 import { handlePopupClose } from './utils/animations/handle-popup-close';
+import { formatDate } from '../../../utils/format-date';
 
 const SuccessPopUp = ({ pet, onClose }) => {
   return (
@@ -26,7 +27,8 @@ const SuccessPopUp = ({ pet, onClose }) => {
             <span className="tp-1">Weight:</span> {pet.pet_weight}
           </p>
           <p className="capitalize tp-1-light">
-            <span className="tp-1">Last Vet Visit:</span> {pet.last_vet_visit}
+            <span className="tp-1">Last Vet Visit:</span>{' '}
+            {formatDate(pet.last_vet_visit)}
           </p>
         </div>
         <button

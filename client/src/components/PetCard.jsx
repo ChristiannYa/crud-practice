@@ -1,9 +1,25 @@
 import PropTypes from 'prop-types';
 import { formatDate } from '../utils/format-date';
 
-const PetCard = ({ img, name, breed, age, weight, lastVetVisit }) => {
+const PetCard = ({
+  id,
+  img,
+  name,
+  breed,
+  age,
+  weight,
+  lastVetVisit,
+  onDelete,
+}) => {
   return (
-    <div className="w-[350px] bg-neutral-800 p-4 rounded-lg">
+    <div className="w-[350px] bg-neutral-800 p-4 rounded-lg relative">
+      <button
+        onClick={() => onDelete(id)}
+        className="cursor-pointer tp-1 bg-red-500 hover:bg-red-600 rounded-full px-2 absolute top-1 right-1 scale-75"
+      >
+        x
+      </button>
+
       <div className="flex gap-x-4">
         <div className="w-[50px] h-[50px] mb-2 bg-slate-600">
           <img
@@ -40,12 +56,14 @@ const PetCard = ({ img, name, breed, age, weight, lastVetVisit }) => {
 };
 
 PetCard.propTypes = {
+  id: PropTypes.number.isRequired,
   img: PropTypes.string,
   name: PropTypes.string,
   breed: PropTypes.string.isRequired,
   age: PropTypes.number.isRequired,
   weight: PropTypes.string,
   lastVetVisit: PropTypes.string.isRequired,
+  onDelete: PropTypes.func.isRequired,
 };
 
 export default PetCard;
