@@ -9,7 +9,7 @@ const ErrorPopUp = ({ error, onClose }) => {
         <h2 className="text-xl text-red-500 font-bold mb-4">
           Error Adding Pet
         </h2>
-        <p className="text-red-500">• {error}</p>
+        <p className="text-white">• {error}</p>
         <button
           onClick={() => handlePopupClose(onClose)}
           className="mt-4 px-2 py-1 bg-neutral-700 rounded-md cursor-pointer text-white"

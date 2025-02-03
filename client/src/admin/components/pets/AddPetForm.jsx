@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 
 import { addPet } from '../../requests/pets';
 import { getPetCategories } from '../../requests/pet-categories';
+import { validatePetData } from './utils/validate-pet-data';
+import { initialPetFields, inputFields } from './constants/initial-pet-fields';
 import SuccessPopUp from './SuccessPopUp';
 import ErrorPopUp from './ErrorPopUp';
-import { validatePetData } from './utils/validate-pet-data';
 
 const AddPetForm = () => {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
@@ -13,14 +14,7 @@ const AddPetForm = () => {
   const [addedPet, setAddedPet] = useState(null);
   const [categories, setCategories] = useState([]);
 
-  const [petData, setPetData] = useState({
-    category_name: '',
-    pet_name: '',
-    pet_breed: '',
-    pet_age: '',
-    pet_weight: '',
-    last_vet_visit: '',
-  });
+  const [petData, setPetData] = useState(initialPetFields);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -42,14 +36,7 @@ const AddPetForm = () => {
       setAddedPet(newPet);
       setShowSuccessPopup(true);
 
-      setPetData({
-        category_name: '',
-        pet_name: '',
-        pet_breed: '',
-        pet_age: '',
-        pet_weight: '',
-        last_vet_visit: '',
-      });
+      setPetData(initialPetFields);
     } catch (error) {
       setError(error.message);
       setShowErrorPopup(true);
@@ -63,39 +50,6 @@ const AddPetForm = () => {
       [name]: value,
     }));
   };
-
-  const inputFields = [
-    {
-      label: 'Name',
-      name: 'pet_name',
-      type: 'text',
-      placeholder: 'Enter pet name',
-    },
-    {
-      label: 'Breed',
-      name: 'pet_breed',
-      type: 'text',
-      placeholder: 'Enter pet breed',
-    },
-    {
-      label: 'Age',
-      name: 'pet_age',
-      type: 'number',
-      placeholder: 'Enter pet age',
-    },
-    {
-      label: 'Weight',
-      name: 'pet_weight',
-      type: 'text',
-      placeholder: 'Enter pet weight',
-    },
-    {
-      label: 'Last Vet Visit',
-      name: 'last_vet_visit',
-      type: 'date',
-      placeholder: 'Enter last vet visit date',
-    },
-  ];
 
   return (
     <>

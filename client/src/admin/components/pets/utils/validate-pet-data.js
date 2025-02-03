@@ -17,10 +17,10 @@ export const validatePetData = (petData) => {
       case 'pet_breed':
         if (!value) {
           throw new Error(
-            `Pet '${
-              field.replace('pet_', '').charAt(0).toLowerCase() +
+            `Pet ${
+              field.replace('pet_', '').charAt(0).toUpperCase() +
               field.replace('pet_', '').slice(1)
-            }' is required`
+            } is required`
           );
         }
         if (value.length < MIN_LENGTH || value.length > MAX_LENGTH) {
