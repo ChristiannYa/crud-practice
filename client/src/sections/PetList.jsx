@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import PetCard from '../components/PetCard';
 import ConfirmPetDeletePopup from '../admin/components/pets/ConfirmPetDeletePopup';
 import AddPetForm from '../admin/components/pets/AddPetForm';
-import { deletePet } from '../admin/requests/pets';
+import { deletePet } from '../requests/pets';
 
 const PetList = () => {
   const [pets, setPets] = useState([]);

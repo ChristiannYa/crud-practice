@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import { addPet } from '../../requests/pets';
-import { getPetCategories } from '../../requests/pet-categories';
+import { addPet } from '../../../requests/pets';
+import { getPetCategories } from '../../../requests/pet-categories';
 import { validatePetData } from './utils/validate-pet-data';
 import { initialPetFields, inputFields } from './constants/initial-pet-fields';
 import SuccessPopUp from './SuccessPopUp';
