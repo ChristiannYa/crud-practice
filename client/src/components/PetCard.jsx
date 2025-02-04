@@ -22,7 +22,7 @@ const PetCard = ({
       x
     </button>
     <div className="flex gap-x-4">
-      <div className="w-[50px] h-[50px] mb-2 bg-slate-600">
+      <div className="bg-slate-700 rounded-md w-[52px] h-[52px]">
         <img
           src={img_url}
           alt={pet_name}
