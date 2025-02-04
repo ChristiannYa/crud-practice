@@ -1,6 +1,0 @@
-Pet Care Management System
-
-- Track multiple pets' info
-- Record vet visits, medications, vaccinations
-- Update pet weight and health status
-- Remove old records
