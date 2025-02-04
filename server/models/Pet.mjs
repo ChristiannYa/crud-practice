@@ -1,4 +1,5 @@
 import { pool } from '../config/db.mjs';
+import { petFields } from '../constants/pet-fields.mjs';
 import {
   sortPetsByCategoryQuery,
   getPetsByCategoryNameQuery,
@@ -14,9 +15,10 @@ export class Pet {
   }
 
   static async findByCategory(categoryName) {
-    const result = await pool.query(getPetsByCategoryNameQuery(['p.*']), [
-      categoryName,
-    ]);
+    const result = await pool.query(
+      getPetsByCategoryNameQuery(['p.*, c.category_name']),
+      [categoryName]
+    );
     return result.rows;
   }
 
