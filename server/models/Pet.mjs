@@ -1,56 +1,55 @@
-import { pool } from '../config/db.mjs';
 import { petFields } from '../constants/pet-fields.mjs';
-import {
-  sortPetsByCategoryQuery,
-  getPetsByCategoryNameQuery,
-  getCategoryIdByNameQuery,
-  insertWithCategoryQuery,
-} from '../repositories/pets/petsRepository.mjs';
-import {
-  buildUpdatePetQuery,
-  buildDeleteQuery,
-} from '../repositories/base/baseRepository.mjs';
 
 export class Pet {
-  static async findAll() {
-    const result = await pool.query(sortPetsByCategoryQuery(['pets.*']));
-    return result.rows;
+  constructor(data) {
+    this.id = data.id;
+    this.category_id = data.category_id;
+    this.category_name = data.category_name;
+    this.pet_name = data.pet_name;
+    this.pet_breed = data.pet_breed;
+    this.pet_age = data.pet_age;
+    this.pet_weight = data.pet_weight;
+    this.last_vet_visit = data.last_vet_visit;
+    this.created_at = data.created_at;
+    this.updated_at = data.updated_at;
   }
 
-  static async findByCategory(categoryName) {
-    const result = await pool.query(
-      getPetsByCategoryNameQuery(['p.*, c.category_name']),
-      [categoryName]
-    );
-    return result.rows;
+  validate() {
+    if (!this.pet_name || !this.pet_breed) {
+      throw new Error('Pet name and breed are required');
+    }
+
+    if (this.pet_age <= 0) {
+      throw new Error('Pet age must be greater than 0');
+    }
+
+    if (!this.pet_weight) {
+      throw new Error('Pet weight is required');
+    }
+
+    if (!this.last_vet_visit) {
+      throw new Error('Last vet visit date is required');
+    }
+
+    return true;
   }
 
-  static async create(categoryName, petData) {
-    const categoryResult = await pool.query(getCategoryIdByNameQuery(['id']), [
-      categoryName,
-    ]);
-    if (categoryResult.rows.length === 0) return null;
-
-    const category_id = categoryResult.rows[0].id;
-    const values = [
-      category_id,
-      ...petFields.slice(1).map((field) => petData[field]),
-    ];
-    const result = await pool.query(
-      insertWithCategoryQuery('pets', petFields),
-      values
-    );
-    return result.rows[0];
+  toJSON() {
+    return {
+      id: this.id,
+      category_id: this.category_id,
+      category_name: this.category_name,
+      pet_name: this.pet_name,
+      pet_breed: this.pet_breed,
+      pet_age: this.pet_age,
+      pet_weight: this.pet_weight,
+      last_vet_visit: this.last_vet_visit,
+      created_at: this.created_at,
+      updated_at: this.updated_at,
+    };
   }
 
-  static async update(id, updateFields, data) {
-    const values = [id, ...updateFields.map((field) => data[field])];
-    const result = await pool.query(buildUpdatePetQuery(updateFields), values);
-    return result.rows[0];
-  }
-
-  static async delete(id) {
-    const result = await pool.query(buildDeleteQuery('pets', 'id', '*'), [id]);
-    return result.rows[0];
+  static getFields() {
+    return petFields;
   }
 }

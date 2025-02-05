@@ -1,10 +1,12 @@
 import { PetService } from '../services/petService.mjs';
 import { handleRepeatedField } from '../utils/repeatedField.mjs';
 
+const petService = new PetService();
+
 /* GET request - all pets */
 export const getAllPets = async (req, res) => {
   try {
-    const pets = await PetService.getAllPets();
+    const pets = await petService.getAllPets();
     res.status(200).json(pets);
   } catch (error) {
     console.error('Error fetching pets:', error);
@@ -16,7 +18,7 @@ export const getAllPets = async (req, res) => {
 export const getPetsByCategory = async (req, res) => {
   const { category_name } = req.params;
   try {
-    const pets = await PetService.getPetsByCategory(category_name);
+    const pets = await petService.getPetsByCategory(category_name);
     res.status(200).json(pets);
   } catch (error) {
     console.error(`Error fetching pets by category ${category_name}:`, error);
@@ -28,7 +30,7 @@ export const getPetsByCategory = async (req, res) => {
 export const createPet = async (req, res) => {
   const { category_name, ...petData } = req.body;
   try {
-    const newPet = await PetService.createPet(category_name, petData);
+    const newPet = await petService.createPet(category_name, petData);
     res.status(201).json(newPet);
   } catch (error) {
     handleRepeatedField(error, res, 'Pet');
@@ -40,7 +42,7 @@ export const updatePet = async (req, res) => {
   const { id } = req.params;
   const updateFields = Object.keys(req.body);
   try {
-    const updatedPet = await PetService.updatePet(id, updateFields, req.body);
+    const updatedPet = await petService.updatePet(id, updateFields, req.body);
     res.status(200).json(updatedPet);
   } catch (error) {
     handleRepeatedField(error, res, 'Pet');
@@ -51,7 +53,7 @@ export const updatePet = async (req, res) => {
 export const deletePet = async (req, res) => {
   const { id } = req.params;
   try {
-    const deletedPet = await PetService.deletePet(id);
+    const deletedPet = await petService.deletePet(id);
     res.status(200).json({
       message: 'Successfully deleted pet:',
       deletedPet,
