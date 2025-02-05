@@ -5,12 +5,11 @@ import {
   getPetsByCategoryNameQuery,
   getCategoryIdByNameQuery,
   insertWithCategoryQuery,
-} from '../utils/pets/queries.mjs';
+} from '../repositories/pets/petsRepository.mjs';
 import {
-  buildUpdateQuery,
   buildUpdatePetQuery,
   buildDeleteQuery,
-} from '../utils/queries.mjs';
+} from '../repositories/base/baseRepository.mjs';
 
 export class Pet {
   static async findAll() {

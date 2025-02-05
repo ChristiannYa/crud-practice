@@ -4,8 +4,8 @@ import {
   buildInsertQuery,
   buildUpdateQuery,
   buildDeleteQuery,
-} from '../utils/queries.mjs';
-import { buildCheckPetsQuery } from '../utils/pets-categories/queries.mjs';
+} from '../repositories/base/baseRepository.mjs';
+import { buildCheckPetsQuery } from '../repositories/categories/categoryRepository.mjs';
 
 export class PetCategories {
   static async findAll() {
