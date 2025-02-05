@@ -45,12 +45,12 @@ export const createPet = async (req, res) => {
   }
 };
 
-/* PUT request - update a pet */
+/* PATCH request - update a pet */
 export const updatePet = async (req, res) => {
   const { id } = req.params;
   const updateFields = Object.keys(req.body);
   try {
-    const updatedPet = await Pet.update(id, updateFields);
+    const updatedPet = await Pet.update(id, updateFields, req.body);
     if (!updatedPet) {
       return res.status(404).json({ error: `Pet with id ${id} not found` });
     }

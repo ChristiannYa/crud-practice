@@ -40,8 +40,8 @@ export class Pet {
     return result.rows[0];
   }
 
-  static async update(id, updateFields) {
-    const values = [id, ...updateFields.map((field) => req.body[field])];
+  static async update(id, updateFields, data) {
+    const values = [id, ...updateFields.map((field) => data[field])];
     const result = await pool.query(
       buildUpdateQuery('pets', updateFields),
       values
