@@ -1,10 +1,10 @@
-import { Pet } from '../models/Pet.mjs';
+import { PetService } from '../services/petService.mjs';
 import { handleRepeatedField } from '../utils/repeatedField.mjs';
 
 /* GET request - all pets */
 export const getAllPets = async (req, res) => {
   try {
-    const pets = await Pet.findAll();
+    const pets = await PetService.getAllPets();
     res.status(200).json(pets);
   } catch (error) {
     console.error('Error fetching pets:', error);
@@ -16,7 +16,7 @@ export const getAllPets = async (req, res) => {
 export const getPetsByCategory = async (req, res) => {
   const { category_name } = req.params;
   try {
-    const pets = await Pet.findByCategory(category_name);
+    const pets = await PetService.getPetsByCategory(category_name);
     if (pets.length === 0) {
       return res
         .status(404)
@@ -33,7 +33,7 @@ export const getPetsByCategory = async (req, res) => {
 export const createPet = async (req, res) => {
   const { category_name, ...petData } = req.body;
   try {
-    const newPet = await Pet.create(category_name, petData);
+    const newPet = await PetService.createPet(category_name, petData);
     if (!newPet) {
       return res
         .status(404)
@@ -50,7 +50,7 @@ export const updatePet = async (req, res) => {
   const { id } = req.params;
   const updateFields = Object.keys(req.body);
   try {
-    const updatedPet = await Pet.update(id, updateFields, req.body);
+    const updatedPet = await PetService.updatePet(id, updateFields, req.body);
     if (!updatedPet) {
       return res.status(404).json({ error: `Pet with id ${id} not found` });
     }
@@ -64,7 +64,7 @@ export const updatePet = async (req, res) => {
 export const deletePet = async (req, res) => {
   const { id } = req.params;
   try {
-    const deletedPet = await Pet.delete(id);
+    const deletedPet = await PetService.deletePet(id);
     if (!deletedPet) {
       return res.status(404).json({ error: `Pet with id ${id} not found` });
     }

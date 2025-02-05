@@ -1,9 +1,10 @@
-import { PetCategories } from '../models/PetCategories.mjs';
+import { CategoryService } from '../services/categoryService.mjs';
 import { handleRepeatedField } from '../utils/repeatedField.mjs';
 
+/* GET request - all categories */
 export const getAllCategories = async (req, res) => {
   try {
-    const categories = await PetCategories.findAll();
+    const categories = await CategoryService.getAllCategories();
     res.status(200).json(categories);
   } catch (error) {
     console.error('Error fetching categories', error);
@@ -11,21 +12,26 @@ export const getAllCategories = async (req, res) => {
   }
 };
 
+/* POST request - create a new category */
 export const createCategory = async (req, res) => {
   const { category_name } = req.body;
   try {
-    const newCategory = await PetCategories.create(category_name);
+    const newCategory = await CategoryService.createCategory(category_name);
     res.status(201).json(newCategory);
   } catch (error) {
     handleRepeatedField(error, res, 'Category name');
   }
 };
 
+/* PATCH request - update a category */
 export const updateCategory = async (req, res) => {
   const { id } = req.params;
   const { category_name } = req.body;
   try {
-    const updatedCategory = await PetCategories.update(id, category_name);
+    const updatedCategory = await CategoryService.updateCategory(
+      id,
+      category_name
+    );
     if (!updatedCategory) {
       return res
         .status(404)
@@ -37,17 +43,18 @@ export const updateCategory = async (req, res) => {
   }
 };
 
+/* DELETE request - delete a category */
 export const deleteCategory = async (req, res) => {
   const { category_name } = req.params;
   try {
-    const hasPets = await PetCategories.hasPets(category_name);
+    const hasPets = await CategoryService.hasPets(category_name);
     if (hasPets) {
       return res.status(409).json({
         error: `Cannot delete category "${category_name}". Category has pets associated with it.`,
       });
     }
 
-    const deletedCategory = await PetCategories.delete(category_name);
+    const deletedCategory = await CategoryService.deleteCategory(category_name);
     if (!deletedCategory) {
       return res
         .status(404)

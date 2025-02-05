@@ -15,7 +15,7 @@ const PetCard = ({
   onDeleteClick,
   onEditClick,
 }) => (
-  <div className="w-[350px] bg-neutral-800 p-4 rounded-lg relative">
+  <div className="w-[360px] bg-neutral-800 p-4 rounded-lg relative">
     <div className="absolute top-1 right-1 ">
       <button
         onClick={() => onDeleteClick(id)}
