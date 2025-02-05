@@ -12,6 +12,6 @@ const router = Router();
 router.get('/api/categories', getAllCategories);
 router.post('/api/categories', lettersOnly('category_name'), createCategory);
 router.put('/api/categories/:id', lettersOnly('category_name'), updateCategory);
-router.delete('/api/categories/:id', deleteCategory);
+router.delete('/api/categories/:category_name', deleteCategory);
 
 export default router;
