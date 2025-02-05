@@ -13,14 +13,23 @@ const PetCard = ({
   pet_weight,
   last_vet_visit,
   onDeleteClick,
+  onEditClick,
 }) => (
   <div className="w-[350px] bg-neutral-800 p-4 rounded-lg relative">
-    <button
-      onClick={() => onDeleteClick(id)}
-      className="cursor-pointer tp-1 bg-neutral-700 hover:bg-red-600 rounded-full px-2 absolute top-1 right-1 scale-75"
-    >
-      x
-    </button>
+    <div className="absolute top-1 right-1 ">
+      <button
+        onClick={() => onDeleteClick(id)}
+        className="cursor-pointer tp-1 bg-neutral-700 hover:bg-red-600 rounded-full px-2 scale-75"
+      >
+        x
+      </button>
+      <button
+        onClick={() => onEditClick(id)}
+        className="cursor-pointer tp-1 bg-neutral-700 hover:bg-amber-600 rounded-full px-2 scale-75"
+      >
+        ✎
+      </button>
+    </div>
     <div className="flex gap-x-4">
       <div className="bg-slate-700 rounded-md w-[52px] h-[52px]">
         <img

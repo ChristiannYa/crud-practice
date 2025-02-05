@@ -42,6 +42,15 @@ export const buildUpdateQuery = (table, fields) => `
   RETURNING *
 `;
 
+export const buildUpdatePetQuery = (fields) => `
+  UPDATE pets p
+  SET ${fields.map((field, index) => `${field} = $${index + 2}`).join(', ')},
+  updated_at = CURRENT_TIMESTAMP
+  FROM categories c
+  WHERE p.id = $1 AND p.category_id = c.id
+  RETURNING p.*, c.category_name
+`;
+
 /**
  * Builds a DELETE query for a given table
  * @param {string} table - The table name

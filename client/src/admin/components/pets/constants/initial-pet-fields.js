@@ -7,6 +7,14 @@ export const initialPetFields = {
   last_vet_visit: '',
 };
 
+export const editablePetFields = [
+  'pet_name',
+  'pet_breed',
+  'pet_age',
+  'pet_weight',
+  'last_vet_visit',
+];
+
 export const inputFields = [
   {
     label: 'Name',

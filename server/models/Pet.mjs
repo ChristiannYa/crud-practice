@@ -6,7 +6,11 @@ import {
   getCategoryIdByNameQuery,
   insertWithCategoryQuery,
 } from '../utils/pets/queries.mjs';
-import { buildUpdateQuery, buildDeleteQuery } from '../utils/queries.mjs';
+import {
+  buildUpdateQuery,
+  buildUpdatePetQuery,
+  buildDeleteQuery,
+} from '../utils/queries.mjs';
 
 export class Pet {
   static async findAll() {
@@ -42,10 +46,7 @@ export class Pet {
 
   static async update(id, updateFields, data) {
     const values = [id, ...updateFields.map((field) => data[field])];
-    const result = await pool.query(
-      buildUpdateQuery('pets', updateFields),
-      values
-    );
+    const result = await pool.query(buildUpdatePetQuery(updateFields), values);
     return result.rows[0];
   }
 

@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react';
 import PetCard from '../components/PetCard';
 import ConfirmPetDeletePopup from '../admin/components/pets/ConfirmPetDeletePopup';
 import AddPetForm from '../admin/components/pets/AddPetForm';
-import { deletePet } from '../requests/pets';
+import { deletePet, updatePet } from '../requests/pets';
+import EditPetPopup from '../admin/components/pets/EditPetPopupForm';
 
 const PetList = () => {
   const [pets, setPets] = useState([]);
   const [showAddPetForm, setShowAddPetForm] = useState(false);
+  const [petToEdit, setPetToEdit] = useState(null);
   const [petToDelete, setPetToDelete] = useState(null);
 
   useEffect(() => {
@@ -23,6 +25,22 @@ const PetList = () => {
 
     fetchPets();
   }, []);
+
+  const handleEditClick = (pet) => {
+    setPetToEdit(pet);
+  };
+
+  const handlePetUpdate = async (updatedPet) => {
+    console.log('Data being sent:', updatedPet);
+    try {
+      const result = await updatePet(updatedPet.id, updatedPet);
+      setPets(pets.map((pet) => (pet.id === result.id ? result : pet)));
+
+      setPetToEdit(null);
+    } catch (error) {
+      console.error('Error updating pet:', error);
+    }
+  };
 
   const handleDeleteClick = (pet) => {
     setPetToDelete(pet);
@@ -83,12 +101,21 @@ const PetList = () => {
                   key={pet.id}
                   {...pet}
                   onDeleteClick={() => handleDeleteClick(pet)}
+                  onEditClick={() => handleEditClick(pet)}
                 />
               ))}
             </div>
           </div>
         );
       })}
+
+      {petToEdit && (
+        <EditPetPopup
+          pet={petToEdit}
+          onSave={handlePetUpdate}
+          onCancel={() => setPetToEdit(null)}
+        />
+      )}
 
       {petToDelete && (
         <ConfirmPetDeletePopup
