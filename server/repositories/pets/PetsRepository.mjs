@@ -50,7 +50,7 @@ export class PetsRepository {
     return result.rows[0];
   }
 
-  // Query Methods
+  /* Query Methods */
   getPetsByCategoryNameQuery(fields) {
     return `
       SELECT ${fields.join(', ')}

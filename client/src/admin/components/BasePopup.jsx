@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 
-const BasePopup = ({ title, titleColor = '', children }) => (
+const BasePopup = ({ title, titleColor, children }) => (
   <div className="popup-overlay">
     <div className="popup-content">
-      <h2 className={`text-xl text-${titleColor} font-bold mb-4`}>{title}</h2>
+      <h2 className={`text-xl ${titleColor} font-bold mb-4`}>{title}</h2>
       {children}
     </div>
   </div>

@@ -55,7 +55,7 @@ const AddPetForm = () => {
     <>
       <form
         onSubmit={handleSubmit}
-        className="screen400 bg-neutral-800 mt-2 p-2"
+        className="screen400 bg-neutral-800 rounded-md mt-2 p-2"
       >
         <select
           name="category_name"
@@ -97,7 +97,7 @@ const AddPetForm = () => {
         </div>
         <button
           type="submit"
-          className="tp-1 mt-4 px-2 py-1 bg-neutral-700 rounded-md cursor-pointer"
+          className="tp-1 mt-4 px-2 py-1 bg-neutral-700 hover:bg-neutral-600 rounded-md cursor-pointer"
         >
           add pet
         </button>

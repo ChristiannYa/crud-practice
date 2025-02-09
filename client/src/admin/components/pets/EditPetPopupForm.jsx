@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { editablePetFields } from './constants/initial-pet-fields';
 import { petPropTypes } from '../../../types/pet-prop-types';
 import { handlePopupClose } from './utils/animations/handle-popup-close';
-import BasePopup from './BasePopup';
+import BasePopup from '../BasePopup';
 
 const EditPetPopup = ({ pet, onSave, onCancel }) => {
   const [editedPet, setEditedPet] = useState(pet);
@@ -28,11 +28,12 @@ const EditPetPopup = ({ pet, onSave, onCancel }) => {
   };
 
   return (
-    <BasePopup title="Edit Pet" titleColor="amber-500">
+    <BasePopup title="Edit Pet" titleColor="text-amber-500">
       <div className="space-y-2">
         {editablePetFields.map((field) => (
           <div key={field} className="flex flex-col">
             <label className="tp-1 capitalize">
+              {/* replace _ with empty spaces */}
               {field.replace(/_/g, ' ')}
             </label>
             <input

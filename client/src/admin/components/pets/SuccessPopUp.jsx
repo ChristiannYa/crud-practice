@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import { petPropTypes } from '../../../types/pet-prop-types';
 
-import BasePopup from './BasePopup';
+import BasePopup from '../BasePopup';
 import PetDetailsPopup from './PetDetailsPopup';
 import { handlePopupClose } from './utils/animations/handle-popup-close';
 
 const SuccessPopUp = ({ pet, onClose }) => (
-  <BasePopup title="Pet Added Successfully!" titleColor="white">
+  <BasePopup title="Pet Added Successfully!" titleColor="text-white">
     <PetDetailsPopup pet={pet} />
     <button
       onClick={() => handlePopupClose(onClose)}

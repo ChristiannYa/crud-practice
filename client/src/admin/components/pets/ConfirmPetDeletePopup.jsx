@@ -3,10 +3,10 @@ import { petPropTypes } from '../../../types/pet-prop-types';
 
 import PetDetailsPopup from './PetDetailsPopup';
 import { handlePopupClose } from './utils/animations/handle-popup-close';
-import BasePopup from './BasePopup';
+import BasePopup from '../BasePopup';
 
 const ConfirmPetDeletePopup = ({ pet, onConfirm, onCancel }) => (
-  <BasePopup title="Confirm Pet Deletion" titleColor="red-500">
+  <BasePopup title="Confirm Pet Deletion" titleColor="text-red-500">
     <PetDetailsPopup pet={pet} />
     <div className="mt-4 flex gap-2">
       <button

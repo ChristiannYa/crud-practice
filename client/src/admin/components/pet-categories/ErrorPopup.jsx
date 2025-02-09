@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
-
-import { handlePopupClose } from './utils/animations/handle-popup-close';
+import { handlePopupClose } from '../pets/utils/animations/handle-popup-close';
 import BasePopup from '../BasePopup';
 
-const ErrorPopUp = ({ error, onClose }) => (
-  <BasePopup title="Error Adding Pet" titleColor="text-red-500">
+const CategoryErrorPopUp = ({ error, onClose }) => (
+  <BasePopup title="Error Adding Category" titleColor="text-red-500">
     <p className="text-white">• {error}</p>
     <button
       onClick={() => handlePopupClose(onClose)}
@@ -15,9 +14,9 @@ const ErrorPopUp = ({ error, onClose }) => (
   </BasePopup>
 );
 
-ErrorPopUp.propTypes = {
+CategoryErrorPopUp.propTypes = {
   error: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 
-export default ErrorPopUp;
+export default CategoryErrorPopUp;
