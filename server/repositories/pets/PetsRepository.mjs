@@ -4,7 +4,7 @@ import { petFields } from '../../constants/pet-fields.mjs';
 export class PetsRepository {
   async findAll() {
     const result = await pool.query(this.sortPetsByCategoryQuery(['pets.*']));
-    return result.rows;
+    return this.groupResultsByCategory(result.rows);
   }
 
   async findByCategory(categoryName) {
@@ -61,6 +61,20 @@ export class PetsRepository {
     `;
   }
 
+  groupResultsByCategory(rows) {
+    return rows.reduce((acc, row) => {
+      const category = row.category_name;
+      if (!acc[category]) {
+        acc[category] = [];
+      }
+      if (row.id) {
+        // Only push the pet if it has an ID
+        acc[category].push(row);
+      }
+      return acc;
+    }, {});
+  }
+
   getCategoryIdByNameQuery(fields) {
     return `
       SELECT ${fields.join(', ')} FROM categories
@@ -71,8 +85,11 @@ export class PetsRepository {
   sortPetsByCategoryQuery(fields) {
     return `
       SELECT ${fields.join(', ')}, categories.category_name
-      FROM pets
-      JOIN categories ON pets.category_id = categories.id
+      FROM categories
+      LEFT JOIN pets ON pets.category_id = categories.id
+      ORDER BY
+        CASE WHEN pets.id IS NULL THEN 1 ELSE 0 END,
+        categories.category_name
     `;
   }
 

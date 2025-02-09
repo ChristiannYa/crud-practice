@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+
 import PetCard from '../components/PetCard';
 import ConfirmPetDeletePopup from '../admin/components/pets/ConfirmPetDeletePopup';
 import AddPetForm from '../admin/components/pets/AddPetForm';
@@ -14,18 +15,18 @@ const PetList = () => {
   const [petToDelete, setPetToDelete] = useState(null);
 
   useEffect(() => {
-    const fetchPets = async () => {
+    const fetchData = async () => {
       try {
         const response = await fetch('http://localhost:3000/api/pets');
-        const data = await response.json();
-
-        setPets(data);
+        const petsData = await response.json();
+        console.log('Fetched pets data:', petsData);
+        setPets(petsData);
       } catch (error) {
-        console.error('Error fetching pets:', error);
+        console.error('Error fetching data:', error);
       }
     };
 
-    fetchPets();
+    fetchData();
   }, []);
 
   const handleEditClick = (pet) => {
@@ -64,19 +65,6 @@ const PetList = () => {
     }
   };
 
-  // Group pets by category
-  const groupedPets = pets.reduce((accumulator, pet) => {
-    const category = pet.category_name;
-
-    if (!accumulator[category]) {
-      accumulator[category] = [];
-    }
-
-    accumulator[category].push(pet);
-
-    return accumulator;
-  }, {});
-
   return (
     <div className="screen1200 w-full h-full py-2">
       <div className="flex gap-x-2">
@@ -104,21 +92,25 @@ const PetList = () => {
       {showAddPetCategoryForm && <AddPetCategory />}
 
       {/* pets */}
-      {Object.entries(groupedPets).map(([category, petsInCategory]) => {
+      {Object.entries(pets).map(([category, petsInCategory]) => {
         return (
           <div key={category} className="py-4">
             <h1 className="text-2xl text-amber-500 font-semibold capitalize mb-2">
               {category}
             </h1>
             <div className="flex flex-wrap gap-2">
-              {petsInCategory.map((pet) => (
-                <PetCard
-                  key={pet.id}
-                  {...pet}
-                  onDeleteClick={() => handleDeleteClick(pet)}
-                  onEditClick={() => handleEditClick(pet)}
-                />
-              ))}
+              {petsInCategory.length > 0 ? (
+                petsInCategory.map((pet) => (
+                  <PetCard
+                    key={pet.id}
+                    {...pet}
+                    onDeleteClick={() => handleDeleteClick(pet)}
+                    onEditClick={() => handleEditClick(pet)}
+                  />
+                ))
+              ) : (
+                <p className="text-gray-500">No pets found in this category</p>
+              )}
             </div>
           </div>
         );
