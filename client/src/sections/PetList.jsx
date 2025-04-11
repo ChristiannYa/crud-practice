@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 
+import { getPets } from '../requests/pets';
 import PetCard from '../components/PetCard';
 import ConfirmPetDeletePopup from '../admin/components/pets/ConfirmPetDeletePopup';
 import AddPetForm from '../admin/components/pets/AddPetForm';
@@ -17,9 +18,7 @@ const PetList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/pets');
-        const petsData = await response.json();
-        console.log('Fetched pets data:', petsData);
+        const petsData = await getPets();
         setPets(petsData);
       } catch (error) {
         console.error('Error fetching data:', error);
